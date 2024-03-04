@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+import { Toaster } from 'react-hot-toast';
+
 
 import { Inter } from "next/font/google";
 import type { AppProps } from "next/app";
@@ -13,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <div className={inter.className}>
       <GoogleOAuthProvider clientId="391465271528-vo90ccn0qmkonorakfdp145lt5or6kmd.apps.googleusercontent.com">
       <Component {...pageProps} />
+      <Toaster/>
       </GoogleOAuthProvider>
     </div>
   )

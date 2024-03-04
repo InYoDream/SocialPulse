@@ -11,6 +11,9 @@ import { FaMoneyBillWave } from "react-icons/fa6";
 import { CiMoneyBill } from "react-icons/ci";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useCallback } from "react";
+import toast from "react-hot-toast";
+import graphqlClient from "@/clients/api";
+import verifyUserGoogleTokenQ from "@/graphql/query/user";
 
 interface SideBarButton {
   title: string;
@@ -49,12 +52,19 @@ const sideBarItems: SideBarButton[] = [
 ];
 
 export default function Home() {
-
-  const handleLoginwithGoogle=useCallback((cred:CredentialResponse)=>{
-
-  },[])
-
-
+  const handleLoginwithGoogle = useCallback(
+    async (cred: CredentialResponse) => {
+      const googleToken = cred.credential;
+      if (!googleToken) return  toast.error(`Google token not found.`);
+      const {verifyGoogleToken} = await graphqlClient.request(verifyUserGoogleTokenQ, {
+        token: googleToken,
+      });
+      toast.success(`Verified success`);
+      console.log(verifyGoogleToken);
+      if(verifyGoogleToken)window.localStorage.setItem('__twitter_token',verifyGoogleToken);
+    },
+    []
+  );
 
   return (
     <div>
@@ -89,7 +99,7 @@ export default function Home() {
         <div className="col-span-3">
           <div className="p-5 bg-slate-700 rounded-lg ">
             <h1 className="my-2 text-2xl">New to SocialPulse ???</h1>
-            <GoogleLogin onSuccess={(cred) => console.log(cred)} />
+            <GoogleLogin onSuccess={handleLoginwithGoogle} />
           </div>
         </div>
       </div>
