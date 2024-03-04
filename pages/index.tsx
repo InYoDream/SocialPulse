@@ -9,7 +9,8 @@ import { CgProfile } from "react-icons/cg";
 import FeedCard from "@/components/FeedCard";
 import { FaMoneyBillWave } from "react-icons/fa6";
 import { CiMoneyBill } from "react-icons/ci";
-
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useCallback } from "react";
 
 interface SideBarButton {
   title: string;
@@ -39,16 +40,22 @@ const sideBarItems: SideBarButton[] = [
   },
   {
     title: "Monetization",
-    icon: <CiMoneyBill/>
+    icon: <CiMoneyBill />,
   },
   {
     title: "Profile",
     icon: <CgProfile />,
-  }
-  
+  },
 ];
 
 export default function Home() {
+
+  const handleLoginwithGoogle=useCallback((cred:CredentialResponse)=>{
+
+  },[])
+
+
+
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen px-56">
@@ -79,7 +86,12 @@ export default function Home() {
           <FeedCard />
           <FeedCard />
         </div>
-        <div className="col-span-3"></div>
+        <div className="col-span-3">
+          <div className="p-5 bg-slate-700 rounded-lg ">
+            <h1 className="my-2 text-2xl">New to SocialPulse ???</h1>
+            <GoogleLogin onSuccess={(cred) => console.log(cred)} />
+          </div>
+        </div>
       </div>
     </div>
   );
